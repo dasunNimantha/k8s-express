@@ -1,14 +1,22 @@
-FROM node:18-alpine
+FROM node:18-alpine as base
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
-COPY package*.json ./
+COPY package.json .
 
 RUN npm install
 
 COPY . .
 
-EXPOSE 3000
+RUN npm install -g @vercel/ncc
 
-CMD [ "node", "app.js" ]
+RUN ncc build app.js -o dist
 
+
+FROM node:18-alpine 
+
+WORKDIR /app
+
+COPY --from=base /app/dist/index.js .
+
+CMD ["node", "index.js"]
