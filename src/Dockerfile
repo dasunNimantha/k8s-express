@@ -1,6 +1,8 @@
-FROM node:18-alpine as base
+FROM alpine as base
 
 WORKDIR /app
+
+RUN apk add --update nodejs npm
 
 COPY package.json .
 
@@ -13,9 +15,11 @@ RUN npm install -g @vercel/ncc
 RUN ncc build app.js -o dist
 
 
-FROM node:18-alpine 
+FROM alpine 
 
 WORKDIR /app
+
+RUN apk add --update nodejs npm
 
 COPY --from=base /app/dist/index.js .
 
