@@ -2,7 +2,7 @@ FROM alpine as base
 
 WORKDIR /app
 
-RUN apk add --update nodejs npm
+RUN apk add --update nodejs~=18 npm~=9
 
 COPY package.json .
 
@@ -19,7 +19,7 @@ FROM alpine
 
 WORKDIR /app
 
-RUN apk add --update nodejs npm
+RUN apk add --update nodejs~=18 npm~=9
 
 COPY --from=base /app/dist/index.js .
 
