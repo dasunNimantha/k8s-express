@@ -4,11 +4,11 @@ WORKDIR /app
 
 RUN apk add --update nodejs~=18 npm~=9
 
-COPY package*.json .
+COPY package*.json /app
 
 RUN npm install
 
-COPY . .
+COPY . /app
 
 RUN npm install -g @vercel/ncc
 
