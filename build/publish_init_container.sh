@@ -45,4 +45,3 @@ docker build -t dasunnimantha/opensearch-plugins-installer:$VERSION .
 docker tag dasunnimantha/opensearch-plugins-installer:$VERSION dasunnimantha/opensearch-plugins-installer:latest
 docker login -u $USERNAME -p $PASSWORD 
 docker push dasunnimantha/opensearch-plugins-installer:$VERSION
-echo "Docker Images pushed to artifactory. Exit code: ${'$'}?"
