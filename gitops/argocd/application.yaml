@@ -3,6 +3,8 @@ kind: Application
 metadata:
   name: guestbook
   namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argocd.io
 spec:
   project: default
   source:
@@ -13,8 +15,12 @@ spec:
     server: https://kubernetes.default.svc
 
   syncPolicy:
-    syncOptions:
-      - CreateNamespace=true
     automated:
       selfHeal: true
       prune: true
+      allowEmpty: false
+    syncOptions:
+      - Validate=true
+      - CreateNamespace=true
+      - PrunePropagationPolicy=foreground
+      - PruneLast=true

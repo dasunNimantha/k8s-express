@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-dep
+  namespace: default
+  labels:
+    app: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      initContainers:
+        - name: test
+          image: 'curlimages/curl'
+          imagePullPolicy: Always
+          command: ['sh', '-c', 'curl -k https://github.com/aiven/prometheus-exporter-plugin-for-opensearch/releases/download/2.7.0.0/prometheus-exporter-2.7.0.0.zip -o /usr/local/prometheus-exporter-2.7.0.0.zip']
+          volumeMounts:
+            - name: "plugin-volume"
+              mountPath: /usr/local/
+      containers:
+      - name: nginx
+        image: nginx
+        volumeMounts:
+            - name: "plugin-volume"
+              mountPath: /usr/local
+        ports:
+        - containerPort: 80
+      volumes:
+        - name: plugin-volume
+          emptyDir: {}
